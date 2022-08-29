@@ -15,7 +15,9 @@
     - [Yaml/Json File](#yamljson-file)
     - [Event](#event)
     - [Configmap & Secret](#configmap--secret)
-  - [k8s基本架构](#k8s%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84)
+  - [k8s组件](#k8s%E7%BB%84%E4%BB%B6)
+  - [Container Runtime。](#container-runtime)
+  - [安装k8s](#%E5%AE%89%E8%A3%85k8s)
 - [参考资料](#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -302,7 +304,23 @@ kubectl describe configmap game-config -n tutorial
 kubectl get configmap game-config -o yaml -n tutorial
 ```
 
-## k8s基本架构
+## k8s组件
+
+master组件：etcd、api server、controller
+
+node组件：kubelet、kube-proxy
+
+## Container Runtime。
+
+- containerd
+- docker
+
+## 安装k8s
+
+- kubeadm
+- rke
+- kubespray
+- 手动安装
 
 
 
