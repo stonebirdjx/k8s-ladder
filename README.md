@@ -37,7 +37,7 @@ from introduction to specialist with k8s
 
 ![](https://github.com/stonebirdjx/static/blob/master/k8s-ladder/container_evolution.svg)
 
-:point_right:你需要了解什么是[资源隔离](https://github.com/stonebirdjx/notebook/blob/master/%E8%B5%84%E6%BA%90%E9%9A%94%E7%A6%BB.md)
+:point_right:你需要了解什么是[资源隔离](https://github.com/stonebirdjx/k8s-ladder/blob/master/%E8%B5%84%E6%BA%90%E9%9A%94%E7%A6%BB.md)
 
 ## 了解常用资源和概念
 
