@@ -15,7 +15,7 @@
     - [Yaml/Json File](#yamljson-file)
     - [Event](#event)
     - [Configmap & Secret](#configmap--secret)
-  - [k8s组件](#k8s%E7%BB%84%E4%BB%B6)
+  - [k8s核心组件](#k8s%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6)
   - [Container Runtime](#container-runtime)
   - [安装k8s](#%E5%AE%89%E8%A3%85k8s)
 - [参考资料](#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99)
@@ -304,7 +304,11 @@ kubectl describe configmap game-config -n tutorial
 kubectl get configmap game-config -o yaml -n tutorial
 ```
 
-## k8s组件
+## k8s核心组件
+
+[官方组件说明](https://kubernetes.io/zh-cn/docs/concepts/overview/components/)
+
+[个人组件记录](https://github.com/stonebirdjx/k8s-ladder/blob/master/k8s%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6.md)
 
 - master组件：etcd、api server、controller
 - node组件：kubelet、kube-proxy
