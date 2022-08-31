@@ -18,7 +18,14 @@
       - [多调度器](#%E5%A4%9A%E8%B0%83%E5%BA%A6%E5%99%A8)
   - [Node 节点](#node-%E8%8A%82%E7%82%B9)
     - [Kubelet](#kubelet)
+      - [:point_right:node节点自注册和节点状态更新](#point_rightnode%E8%8A%82%E7%82%B9%E8%87%AA%E6%B3%A8%E5%86%8C%E5%92%8C%E8%8A%82%E7%82%B9%E7%8A%B6%E6%80%81%E6%9B%B4%E6%96%B0)
+      - [:point_right:pod 管理](#point_rightpod-%E7%AE%A1%E7%90%86)
+      - [:point_right:容器健康检查](#point_right%E5%AE%B9%E5%99%A8%E5%81%A5%E5%BA%B7%E6%A3%80%E6%9F%A5)
+      - [:point_right:查询 Node 汇总指标](#point_right%E6%9F%A5%E8%AF%A2-node-%E6%B1%87%E6%80%BB%E6%8C%87%E6%A0%87)
     - [Kube-proxy](#kube-proxy)
+  - [**kube-dns**](#kube-dns)
+    - [CoreDNS](#coredns)
+  - [Network plugin](#network-plugin)
 - [k8s资源对象](#k8s%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -234,21 +241,54 @@ spec:
     image: nginx:1.10
 ```
 
-
-
 ## Node 节点
 
 ### Kubelet
 
-- pod的大管家，负责pod的生命周期管理
-- 是Master和Node之间的桥梁
-- 处理Master下发到本Node上的pod的创建、启停等管理任务，向API Server注册Node信息
-- 监控对应Node上容器的节点资源情况，并向Master汇报节点资源占用情况
+每个Node节点上都运行一个 Kubelet 服务进程，默认监听 10250 端口，接收并执行 Master 发来的指令，管理 Pod 及 Pod 中的容器。每个 Kubelet 进程会在 API Server 上注册所在Node节点的信息，定期向 Master 节点汇报该节点的资源使用情况，并通过 cAdvisor 监控节点和容器的资源。
+
+:point_right:/var/log/kubenetes/kubelet.log
+
+#### :point_right:node节点自注册和节点状态更新
+
+Kubelet 在启动时通过 API Server 注册节点信息，并定时向 API Server 发送节点新消息，API Server 在接收到新消息后，将信息写入 etcd
+
+#### :point_right:pod 管理
+
+kubelet 采用一组通过各种机制提供的 PodSpecs（主要通过 apiserver），并确保这些 PodSpecs 中描述的 Pod 正常健康运行。
+
+#### :point_right:容器健康检查
+
+-  `LivenessProbe `探针：用于判断容器是否健康，告诉 Kubelet 一个容器什么时候处于不健康的状态。如果 LivenessProbe 探针探测到容器不健康，则 Kubelet 将删除该容器，并根据容器的重启策略做相应的处理。如果一个容器不包含 LivenessProbe 探针，那么 Kubelet 认为该容器的 LivenessProbe 探针返回的值永远是 “Success”；
+- `ReadinessProbe`：用于判断容器是否启动完成且准备接收请求。如果 ReadinessProbe 探针探测到失败，则 Pod 的状态将被修改。Endpoint Controller 将从 Service 的 Endpoint 中删除包含该容器所在 Pod 的 IP 地址的 Endpoint 条目。
+
+#### :point_right:查询 Node 汇总指标
+
+在集群内部可以直接访问 kubelet 的 10255 端口，比如 `http://<node-name>:10255/stats/summary`
 
 ### Kube-proxy
 
-- 负责为Service提供cluster内部的服务发现，将到service的请求按策略负载均衡分发到后端pod上
-- 支持nodeport模式，实现从外部访问集群内的service
+kube-proxy是集群中每个节点所上运行的网络代理， 实现 Kubernetes 服务（Service）概念的一部分。
+
+kube-proxy 维护节点上的一些网络规则， 这些网络规则会允许从集群内部或外部的网络会话与 Pod 进行网络通信。
+
+如果操作系统提供了可用的数据包过滤层，则 kube-proxy 会通过它来实现网络规则。 否则，kube-proxy 仅做流量转发。
+
+## **kube-dns**
+
+DNS 是 Kubernetes 的核心功能之一，通过 kube-dns 或 CoreDNS 作为集群的必备扩展来提供命名服务。
+
+### CoreDNS 
+
+从 v1.13 开始成为默认 DNS 服务。CoreDNS 的特点是效率更高，资源占用率更小，推荐使用 CoreDNS 替代 kube-dns 为集群提供 DNS 服务。
+
+## Network plugin
+
+默认情况使用`flannel` 或者 `calico`即可
+
+- cni bridge
+- flannel
+- calico
 
 # k8s资源对象
 

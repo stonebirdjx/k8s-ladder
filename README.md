@@ -16,7 +16,7 @@
     - [Event](#event)
     - [Configmap & Secret](#configmap--secret)
   - [k8s组件](#k8s%E7%BB%84%E4%BB%B6)
-  - [Container Runtime。](#container-runtime)
+  - [Container Runtime](#container-runtime)
   - [安装k8s](#%E5%AE%89%E8%A3%85k8s)
 - [参考资料](#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99)
 
@@ -306,14 +306,18 @@ kubectl get configmap game-config -o yaml -n tutorial
 
 ## k8s组件
 
-master组件：etcd、api server、controller
+- master组件：etcd、api server、controller
+- node组件：kubelet、kube-proxy
+- 网络插件：flannel、calico
 
-node组件：kubelet、kube-proxy
+:point_right:了解基本组件、基本功能
 
-## Container Runtime。
+## Container Runtime
 
 - containerd
 - docker
+
+:point_right:容器运行时接口（CRI），能熟练的使用docker、containerd相关命令
 
 ## 安装k8s
 
