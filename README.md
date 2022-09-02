@@ -318,26 +318,32 @@ kubectl get configmap game-config -o yaml -n tutorial
 
 ## Container Runtime
 
+**概念**
+
 `镜像`：镜像是一个特殊的文件系统，除了提供容器运行时所需的程序、库、资源、配置等文件外，还包含了一些为运行时准备的一些配置参数（如匿名卷、环境变量、用户等）。镜像 **不包含** 任何动态数据，其内容在构建之后也不会被改变。
 
-`容器`：容器的实质是进程，但与直接在宿主执行的进程不同，容器进程运行于属于自己的独立的 [命名空间](https://en.wikipedia.org/wiki/Linux_namespaces)。因此容器可以拥有自己的 `root` 文件系统、自己的网络配置、自己的进程空间，甚至自己的用户 ID 空间。
+`容器`：容器的实质是进程，但与直接在宿主执行的进程不同，容器进程运行于属于自己的独立的命名空间。因此容器可以拥有自己的 `root` 文件系统、自己的网络配置、自己的进程空间，甚至自己的用户 ID 空间。
 
 `镜像仓`：仓库用于存储镜像。可以推荐使用dockerbub，或者自建harbor
 
-容器存储层的生存周期和容器一样，容器消亡时，容器存储层也随之消亡。因此，任何保存于容器存储层的信息都会随容器删除而丢失。
+> 容器存储层的生存周期和容器一样，容器消亡时，容器存储层也随之消亡。因此，任何保存于容器存储层的信息都会随容器删除而丢失。
 
-常用的容器运行时：
+**常用的容器运行时**：
 
 - containerd  -- 命令行（ctr、crictl、nerdctl）
-- docker -- 命令行 docker
+- docker -- 命令行 docker ->  [个人笔记](https://github.com/stonebirdjx/k8s-ladder/blob/master/docker.md)
 
-:point_right:containerd 优势：
+**:point_right:containerd 优势**：
 
 - containerd是docker的基础组件之一，更轻量
 - containerd 调用链更短，组件更少，更稳定，占用节点资源更少。
 - containerd 相比于docker , 多了 namespace 概念，每个 image 和 container 都会在各自的namespace下可见。
 
-:point_right:了解镜像及tag、容器（容器状态）、镜像仓等概率，了解容器运行时接口（CRI），能熟练的使用docker（docker-compose）、containerd相关命令
+:point_right:了解镜像及tag、容器、镜像仓等概率，了解容器运行时接口（CRI），查看了解容器状态。
+
+> 对于docker能熟练的使用docker命令，编码dockerfile，了解docker-compose
+>
+> 对于containerd相关命令
 
 ## 安装k8s
 
