@@ -330,8 +330,8 @@ kubectl get configmap game-config -o yaml -n tutorial
 
 **常用的容器运行时**：
 
-- containerd  -- 命令行（ctr、crictl、nerdctl）
-- docker -- 命令行 docker ->  [个人笔记](https://github.com/stonebirdjx/k8s-ladder/blob/master/docker.md)
+- containerd  -- 命令行（ctr、crictl、nerdctl）- [containerd笔记](https://github.com/stonebirdjx/k8s-ladder/blob/master/containerd.md)
+- docker -- 命令行 docker ->  [docker笔记](https://github.com/stonebirdjx/k8s-ladder/blob/master/docker.md)
 
 **:point_right:containerd 优势**：
 
@@ -343,7 +343,7 @@ kubectl get configmap game-config -o yaml -n tutorial
 
 > 对于docker能熟练的使用docker命令，编码dockerfile，了解docker-compose
 >
-> 对于containerd相关命令
+> 对于containerd相关命令，熟练使用crictl，nerdctl，了解ctr
 
 ## 安装k8s
 
