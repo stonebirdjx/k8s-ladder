@@ -21,6 +21,11 @@
   - [用户](#%E7%94%A8%E6%88%B7)
     - [:point_right:nerdctl login - 登录镜像仓](#point_rightnerdctl-login---%E7%99%BB%E5%BD%95%E9%95%9C%E5%83%8F%E4%BB%93)
     - [:point_right:nerdctl logout - 退出登录](#point_rightnerdctl-logout---%E9%80%80%E5%87%BA%E7%99%BB%E5%BD%95)
+  - [系统管理](#%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86)
+    - [:point_right:nerdctl events - 获取实时事件](#point_rightnerdctl-events---%E8%8E%B7%E5%8F%96%E5%AE%9E%E6%97%B6%E4%BA%8B%E4%BB%B6)
+    - [:point_right:nerdctl info - 显示系统范围的信息](#point_rightnerdctl-info---%E6%98%BE%E7%A4%BA%E7%B3%BB%E7%BB%9F%E8%8C%83%E5%9B%B4%E7%9A%84%E4%BF%A1%E6%81%AF)
+    - [:point_right:nerdctl version - 版本信息](#point_rightnerdctl-version---%E7%89%88%E6%9C%AC%E4%BF%A1%E6%81%AF)
+    - [:point_right:nerdctl system prune - 删除未使用的数据](#point_rightnerdctl-system-prune---%E5%88%A0%E9%99%A4%E6%9C%AA%E4%BD%BF%E7%94%A8%E7%9A%84%E6%95%B0%E6%8D%AE)
   - [镜像管理](#%E9%95%9C%E5%83%8F%E7%AE%A1%E7%90%86)
     - [:point_right:nerdctl images - 列出镜像](#point_rightnerdctl-images---%E5%88%97%E5%87%BA%E9%95%9C%E5%83%8F)
     - [:point_right:nerdctl pull - 拉取镜像](#point_rightnerdctl-pull---%E6%8B%89%E5%8F%96%E9%95%9C%E5%83%8F)
@@ -55,64 +60,60 @@
     - [nerdctl unpause - 恢复容器运行](#nerdctl-unpause---%E6%81%A2%E5%A4%8D%E5%AE%B9%E5%99%A8%E8%BF%90%E8%A1%8C)
     - [nerdctl rename - 重命名容器](#nerdctl-rename---%E9%87%8D%E5%91%BD%E5%90%8D%E5%AE%B9%E5%99%A8)
     - [:point_right:nerdctl container prune - 移除所有停止的容器](#point_rightnerdctl-container-prune---%E7%A7%BB%E9%99%A4%E6%89%80%E6%9C%89%E5%81%9C%E6%AD%A2%E7%9A%84%E5%AE%B9%E5%99%A8)
+  - [Stats - 状态](#stats---%E7%8A%B6%E6%80%81)
+    - [:point_right:nerdctl stats - 显示容器使用资源](#point_rightnerdctl-stats---%E6%98%BE%E7%A4%BA%E5%AE%B9%E5%99%A8%E4%BD%BF%E7%94%A8%E8%B5%84%E6%BA%90)
+    - [:point_right:nerdctl top - 显示容器运行的进程](#point_rightnerdctl-top---%E6%98%BE%E7%A4%BA%E5%AE%B9%E5%99%A8%E8%BF%90%E8%A1%8C%E7%9A%84%E8%BF%9B%E7%A8%8B)
   - [build](#build)
     - [:point_right:nerdctl build - 从Dockerfile构建镜像](#point_rightnerdctl-build---%E4%BB%8Edockerfile%E6%9E%84%E5%BB%BA%E9%95%9C%E5%83%8F)
     - [:point_right:nerdctl commit - 将容器保存为镜像](#point_rightnerdctl-commit---%E5%B0%86%E5%AE%B9%E5%99%A8%E4%BF%9D%E5%AD%98%E4%B8%BA%E9%95%9C%E5%83%8F)
   - [网络管理](#%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86)
-    - [:point_right:nerdctl network create](#point_rightnerdctl-network-create)
-    - [:point_right:nerdctl network ls](#point_rightnerdctl-network-ls)
-    - [:point_right:nerdctl network inspect](#point_rightnerdctl-network-inspect)
-    - [:point_right:nerdctl network rm](#point_rightnerdctl-network-rm)
-    - [:point_right:nerdctl network prune](#point_rightnerdctl-network-prune)
+    - [:point_right:nerdctl network create - 创建网络](#point_rightnerdctl-network-create---%E5%88%9B%E5%BB%BA%E7%BD%91%E7%BB%9C)
+    - [:point_right:nerdctl network ls - 网络列表](#point_rightnerdctl-network-ls---%E7%BD%91%E7%BB%9C%E5%88%97%E8%A1%A8)
+    - [:point_right:nerdctl network inspect - 网络详情](#point_rightnerdctl-network-inspect---%E7%BD%91%E7%BB%9C%E8%AF%A6%E6%83%85)
+    - [:point_right:nerdctl network rm - 删除网络](#point_rightnerdctl-network-rm---%E5%88%A0%E9%99%A4%E7%BD%91%E7%BB%9C)
+    - [:point_right:nerdctl network prune - 删除没有使用的网络](#point_rightnerdctl-network-prune---%E5%88%A0%E9%99%A4%E6%B2%A1%E6%9C%89%E4%BD%BF%E7%94%A8%E7%9A%84%E7%BD%91%E7%BB%9C)
   - [数据卷管理](#%E6%95%B0%E6%8D%AE%E5%8D%B7%E7%AE%A1%E7%90%86)
-    - [:point_right:nerdctl volume create](#point_rightnerdctl-volume-create)
-    - [:point_right:nerdctl volume ls](#point_rightnerdctl-volume-ls)
-    - [:point_right:nerdctl volume inspect](#point_rightnerdctl-volume-inspect)
-    - [:point_right:nerdctl volume rm](#point_rightnerdctl-volume-rm)
-    - [:point_right:nerdctl volume prune](#point_rightnerdctl-volume-prune)
+    - [:point_right:nerdctl volume create - 创建数据卷](#point_rightnerdctl-volume-create---%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%8D%B7)
+    - [:point_right:nerdctl volume ls - 数据卷列表](#point_rightnerdctl-volume-ls---%E6%95%B0%E6%8D%AE%E5%8D%B7%E5%88%97%E8%A1%A8)
+    - [:point_right:nerdctl volume inspect - 数据卷详情](#point_rightnerdctl-volume-inspect---%E6%95%B0%E6%8D%AE%E5%8D%B7%E8%AF%A6%E6%83%85)
+    - [:point_right:nerdctl volume rm - 删除数据卷](#point_rightnerdctl-volume-rm---%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE%E5%8D%B7)
+    - [:point_right:nerdctl volume prune - 删除没有使用的数据卷](#point_rightnerdctl-volume-prune---%E5%88%A0%E9%99%A4%E6%B2%A1%E6%9C%89%E4%BD%BF%E7%94%A8%E7%9A%84%E6%95%B0%E6%8D%AE%E5%8D%B7)
   - [命名空间管理](#%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E7%AE%A1%E7%90%86)
-    - [:point_right:nerdctl namespace create](#point_rightnerdctl-namespace-create)
-    - [:point_right:nerdctl namespace ls](#point_rightnerdctl-namespace-ls)
-    - [:point_right:nerdctl namespace inspect](#point_rightnerdctl-namespace-inspect)
-    - [:point_right:nerdctl namespace rm](#point_rightnerdctl-namespace-rm)
-    - [:point_right:nerdctl namespace prune](#point_rightnerdctl-namespace-prune)
+    - [:point_right:nerdctl namespace create - 创建命名空间](#point_rightnerdctl-namespace-create---%E5%88%9B%E5%BB%BA%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4)
+    - [:point_right:nerdctl namespace ls - 命名空间列表](#point_rightnerdctl-namespace-ls---%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E5%88%97%E8%A1%A8)
+    - [:point_right:nerdctl namespace inspect - 命名空间详情](#point_rightnerdctl-namespace-inspect---%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E8%AF%A6%E6%83%85)
+    - [:point_right:nerdctl namespace remove - 删除命名空间](#point_rightnerdctl-namespace-remove---%E5%88%A0%E9%99%A4%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4)
+    - [:point_right:nerdctl namespace update - 更改命名空间（label）](#point_rightnerdctl-namespace-update---%E6%9B%B4%E6%94%B9%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4label)
   - [容器资源管理](#%E5%AE%B9%E5%99%A8%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86)
-    - [:point_right:nerdctl apparmor inspect](#point_rightnerdctl-apparmor-inspect)
-    - [:point_right:nerdctl apparmor load](#point_rightnerdctl-apparmor-load)
-    - [:point_right:nerdctl apparmor ls](#point_rightnerdctl-apparmor-ls)
-    - [:point_right:nerdctl apparmor unload](#point_rightnerdctl-apparmor-unload)
+    - [nerdctl apparmor inspect - 显示nerdctl-default配置详情](#nerdctl-apparmor-inspect---%E6%98%BE%E7%A4%BAnerdctl-default%E9%85%8D%E7%BD%AE%E8%AF%A6%E6%83%85)
+    - [nerdctl apparmor load - 加载nerdctl-default配置详情](#nerdctl-apparmor-load---%E5%8A%A0%E8%BD%BDnerdctl-default%E9%85%8D%E7%BD%AE%E8%AF%A6%E6%83%85)
+    - [nerdctl apparmor ls - 已加载AppArmor profile列表](#nerdctl-apparmor-ls---%E5%B7%B2%E5%8A%A0%E8%BD%BDapparmor-profile%E5%88%97%E8%A1%A8)
+    - [nerdctl apparmor unload - 卸载 AppArmor 配置文件](#nerdctl-apparmor-unload---%E5%8D%B8%E8%BD%BD-apparmor-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6)
   - [Builder 管理](#builder-%E7%AE%A1%E7%90%86)
-    - [:point_right:nerdctl builder prune](#point_rightnerdctl-builder-prune)
-    - [:point_right:nerdctl builder prune](#point_rightnerdctl-builder-prune-1)
-  - [系统管理](#%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86)
-    - [:point_right:nerdctl events](#point_rightnerdctl-events)
-    - [:point_right:nerdctl info](#point_rightnerdctl-info)
-    - [:point_right:nerdctl version](#point_rightnerdctl-version)
-    - [:point_right:nerdctl system prune](#point_rightnerdctl-system-prune)
-  - [Stats - 状态](#stats---%E7%8A%B6%E6%80%81)
-    - [:point_right:nerdctl stats](#point_rightnerdctl-stats)
-    - [:point_right:nerdctl top](#point_rightnerdctl-top)
+    - [nerdctl builder prune - 清理 BuildKit 构建缓存](#nerdctl-builder-prune---%E6%B8%85%E7%90%86-buildkit-%E6%9E%84%E5%BB%BA%E7%BC%93%E5%AD%98)
+    - [:point_right:nerdctl builder debug - 使用 buildg 交互式调试 Dockerfile](#point_rightnerdctl-builder-debug---%E4%BD%BF%E7%94%A8-buildg-%E4%BA%A4%E4%BA%92%E5%BC%8F%E8%B0%83%E8%AF%95-dockerfile)
   - [Shell completion](#shell-completion)
-    - [:point_right:nerdctl completion bash](#point_rightnerdctl-completion-bash)
-    - [:point_right:nerdctl completion zsh](#point_rightnerdctl-completion-zsh)
-    - [:point_right:nerdctl completion fish](#point_rightnerdctl-completion-fish)
-    - [:point_right:nerdctl completion powershell](#point_rightnerdctl-completion-powershell)
-  - [Compose](#compose)
-    - [:point_right:nerdctl compose](#point_rightnerdctl-compose)
-    - [:point_right:nerdctl compose up](#point_rightnerdctl-compose-up)
-    - [:point_right:nerdctl compose logs](#point_rightnerdctl-compose-logs)
-    - [:point_right:nerdctl compose build](#point_rightnerdctl-compose-build)
-    - [:point_right:nerdctl compose down](#point_rightnerdctl-compose-down)
-    - [:point_right:nerdctl compose ps](#point_rightnerdctl-compose-ps)
-    - [:point_right:nerdctl compose pull](#point_rightnerdctl-compose-pull)
-    - [:point_right:nerdctl compose push](#point_rightnerdctl-compose-push)
-    - [:point_right:nerdctl compose config](#point_rightnerdctl-compose-config)
-    - [:point_right:nerdctl compose kill](#point_rightnerdctl-compose-kill)
-    - [:point_right:nerdctl compose run](#point_rightnerdctl-compose-run)
+    - [:point_right:nerdctl completion bash - 为 bash 生成自动完成脚本](#point_rightnerdctl-completion-bash---%E4%B8%BA-bash-%E7%94%9F%E6%88%90%E8%87%AA%E5%8A%A8%E5%AE%8C%E6%88%90%E8%84%9A%E6%9C%AC)
+    - [nerdctl completion zsh - 为 zsh生成自动完成脚本](#nerdctl-completion-zsh---%E4%B8%BA-zsh%E7%94%9F%E6%88%90%E8%87%AA%E5%8A%A8%E5%AE%8C%E6%88%90%E8%84%9A%E6%9C%AC)
+    - [nerdctl completion fish - 为 fish生成自动完成脚本](#nerdctl-completion-fish---%E4%B8%BA-fish%E7%94%9F%E6%88%90%E8%87%AA%E5%8A%A8%E5%AE%8C%E6%88%90%E8%84%9A%E6%9C%AC)
+    - [nerdctl completion powershell - 为 powershell 生成自动完成脚本](#nerdctl-completion-powershell---%E4%B8%BA-powershell-%E7%94%9F%E6%88%90%E8%87%AA%E5%8A%A8%E5%AE%8C%E6%88%90%E8%84%9A%E6%9C%AC)
+  - [Compose - 容器编排](#compose---%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92)
+    - [:point_right:nerdctl compose - 编排](#point_rightnerdctl-compose---%E7%BC%96%E6%8E%92)
+    - [:point_right:nerdctl compose up  - 创建和启动容器](#point_rightnerdctl-compose-up----%E5%88%9B%E5%BB%BA%E5%92%8C%E5%90%AF%E5%8A%A8%E5%AE%B9%E5%99%A8)
+    - [:point_right:nerdctl compose logs -  查看容器日志](#point_rightnerdctl-compose-logs----%E6%9F%A5%E7%9C%8B%E5%AE%B9%E5%99%A8%E6%97%A5%E5%BF%97)
+    - [:point_right:nerdctl compose build - 创建或重新创建服务](#point_rightnerdctl-compose-build---%E5%88%9B%E5%BB%BA%E6%88%96%E9%87%8D%E6%96%B0%E5%88%9B%E5%BB%BA%E6%9C%8D%E5%8A%A1)
+    - [:point_right:nerdctl compose down - 移除容器和相关资源](#point_rightnerdctl-compose-down---%E7%A7%BB%E9%99%A4%E5%AE%B9%E5%99%A8%E5%92%8C%E7%9B%B8%E5%85%B3%E8%B5%84%E6%BA%90)
+    - [:point_right:nerdctl compose ps - 列出服务的相关容器](#point_rightnerdctl-compose-ps---%E5%88%97%E5%87%BA%E6%9C%8D%E5%8A%A1%E7%9A%84%E7%9B%B8%E5%85%B3%E5%AE%B9%E5%99%A8)
+    - [nerdctl compose pull - 拉取服务镜像](#nerdctl-compose-pull---%E6%8B%89%E5%8F%96%E6%9C%8D%E5%8A%A1%E9%95%9C%E5%83%8F)
+    - [nerdctl compose push - 推送服务镜像](#nerdctl-compose-push---%E6%8E%A8%E9%80%81%E6%9C%8D%E5%8A%A1%E9%95%9C%E5%83%8F)
+    - [:point_right:nerdctl compose config - 验证并查看 Compose 文件](#point_rightnerdctl-compose-config---%E9%AA%8C%E8%AF%81%E5%B9%B6%E6%9F%A5%E7%9C%8B-compose-%E6%96%87%E4%BB%B6)
+    - [nerdctl compose kill - 杀死服务的容器运行](#nerdctl-compose-kill---%E6%9D%80%E6%AD%BB%E6%9C%8D%E5%8A%A1%E7%9A%84%E5%AE%B9%E5%99%A8%E8%BF%90%E8%A1%8C)
+    - [nerdctl compose run - 启动服务运行容器（一次性命令）](#nerdctl-compose-run---%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1%E8%BF%90%E8%A1%8C%E5%AE%B9%E5%99%A8%E4%B8%80%E6%AC%A1%E6%80%A7%E5%91%BD%E4%BB%A4)
   - [IPFS 管理](#ipfs-%E7%AE%A1%E7%90%86)
-    - [:point_right:nerdctl ipfs registry up](#point_rightnerdctl-ipfs-registry-up)
-    - [:point_right:nerdctl ipfs registry down](#point_rightnerdctl-ipfs-registry-down)
-    - [:point_right:nerdctl ipfs registry serve](#point_rightnerdctl-ipfs-registry-serve)
+    - [:point_right:nerdctl ipfs registry up - 启动由 IPFS 支持的只读本地注册表](#point_rightnerdctl-ipfs-registry-up---%E5%90%AF%E5%8A%A8%E7%94%B1-ipfs-%E6%94%AF%E6%8C%81%E7%9A%84%E5%8F%AA%E8%AF%BB%E6%9C%AC%E5%9C%B0%E6%B3%A8%E5%86%8C%E8%A1%A8)
+    - [:point_right:nerdctl ipfs registry down - 停止由 IPFS 支持的只读本地注册表](#point_rightnerdctl-ipfs-registry-down---%E5%81%9C%E6%AD%A2%E7%94%B1-ipfs-%E6%94%AF%E6%8C%81%E7%9A%84%E5%8F%AA%E8%AF%BB%E6%9C%AC%E5%9C%B0%E6%B3%A8%E5%86%8C%E8%A1%A8)
+    - [:point_right:nerdctl ipfs registry serve - 启动在 localhost 上提供由 IPFS 支持的只读注册表。](#point_rightnerdctl-ipfs-registry-serve---%E5%90%AF%E5%8A%A8%E5%9C%A8-localhost-%E4%B8%8A%E6%8F%90%E4%BE%9B%E7%94%B1-ipfs-%E6%94%AF%E6%8C%81%E7%9A%84%E5%8F%AA%E8%AF%BB%E6%B3%A8%E5%86%8C%E8%A1%A8)
+  - [全局options](#%E5%85%A8%E5%B1%80options)
 - [其他](#%E5%85%B6%E4%BB%96)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -380,6 +381,46 @@ Usage:
 ```bash
 Usage: 
 	nerdctl logout [SERVER]
+```
+
+## 系统管理
+
+### :point_right:nerdctl events - 获取实时事件
+
+```bash
+Usage: 
+	nerdctl events [OPTIONS]
+
+# 常用options
+--format: Format the output using the given Go template, e.g, {{json .}}
+```
+
+### :point_right:nerdctl info - 显示系统范围的信息
+
+```bash
+Usage: 
+	nerdctl info [OPTIONS]
+```
+
+### :point_right:nerdctl version - 版本信息
+
+```bash
+Usage: 
+	nerdctl version 
+```
+
+### :point_right:nerdctl system prune - 删除未使用的数据
+
+> 目前需要指定 --all
+
+```bash
+Usage: 
+	nerdctl system prune [OPTIONS]
+
+# 常用options
+-a, --all: Remove all unused images, not just dangling ones
+-f, --force: Do not prompt for confirmation
+--volumes: Prune volumes
 ```
 
 ## 镜像管理
@@ -717,6 +758,28 @@ Usage:
 -f, --force: Do not prompt for confirmation.
 ```
 
+## Stats - 状态
+
+### :point_right:nerdctl stats - 显示容器使用资源
+
+```bash
+Usage: 
+	nerdctl stats [OPTIONS]
+
+# 常用options
+-a, --all: Show all containers (default shows just running)
+--format=FORMAT: Pretty-print images using a Go template, e.g., {{json .}}
+--no-stream: Disable streaming stats and only pull the first result
+--no-trunc : Do not truncate output
+```
+
+### :point_right:nerdctl top - 显示容器运行的进程
+
+```bash
+Usage: 
+	nerdctl top CONTAINER [ps OPTIONS]
+```
+
 ## build
 
 ### :point_right:nerdctl build - 从Dockerfile构建镜像
@@ -751,117 +814,384 @@ nerdctl commit -a "stonebird" -m "1245863260@qq.com" a404c6c174a2  nginx:v1
 
 ## 网络管理
 
-### :point_right:nerdctl network create
+### :point_right:nerdctl network create - 创建网络
 
-### :point_right:nerdctl network ls
+```bash
+Usage: 
+	nerdctl network create [OPTIONS] NETWORK
 
-### :point_right:nerdctl network inspect
+# 常用options
+-d, --driver=(bridge|nat|macvlan|ipvlan): Driver to manage the Network(Default bridge)
+--subnet: Subnet in CIDR format that represents a network segment, e.g. "10.5.0.0/16"
+--gateway: Gateway for the master subnet
+```
 
-### :point_right:nerdctl network rm
+### :point_right:nerdctl network ls - 网络列表
 
-### :point_right:nerdctl network prune
+```bash
+Usage: 
+	nerdctl network ls [OPTIONS]
+```
+
+### :point_right:nerdctl network inspect - 网络详情
+
+```bash
+Usage: 
+	nerdctl network inspect [OPTIONS] NETWORK [NETWORK...]
+```
+
+### :point_right:nerdctl network rm - 删除网络
+
+```bash
+Usage: 
+	nerdctl network rm NETWORK [NETWORK...]
+```
+
+### :point_right:nerdctl network prune - 删除没有使用的网络
+
+```bash
+Usage: 
+	nerdctl network prune [OPTIONS]
+
+# 常用options
+-f, --force: Do not prompt for confirmation
+```
 
 ## 数据卷管理
 
-### :point_right:nerdctl volume create
+### :point_right:nerdctl volume create - 创建数据卷
 
-### :point_right:nerdctl volume ls
+```bash
+Usage: 
+	nerdctl volume create [OPTIONS] [VOLUME]
+```
 
-### :point_right:nerdctl volume inspect
+### :point_right:nerdctl volume ls - 数据卷列表
 
-### :point_right:nerdctl volume rm
+```bash
+Usage: 
+	nerdctl volume ls [OPTIONS]
+```
 
-### :point_right:nerdctl volume prune
+### :point_right:nerdctl volume inspect - 数据卷详情
+
+```bash
+Usage: 
+	nerdctl volume inspect [OPTIONS] VOLUME [VOLUME...]
+```
+
+### :point_right:nerdctl volume rm - 删除数据卷
+
+```bash
+Usage: 
+	nerdctl volume rm [OPTIONS] VOLUME [VOLUME...]
+
+# 常用options
+-f, --force: Force the removal of one or more volumes
+```
+
+### :point_right:nerdctl volume prune - 删除没有使用的数据卷
+
+```bash
+Usage: 
+	nerdctl volume prune [OPTIONS]
+
+# 常用options
+-f, --force: Do not prompt for confirmation
+```
 
 ## 命名空间管理
 
-### :point_right:nerdctl namespace create
+### :point_right:nerdctl namespace create - 创建命名空间
 
-### :point_right:nerdctl namespace ls
+```bash
+Usage: 
+	nerdctl namespace create NAMESPACE 
 
-### :point_right:nerdctl namespace inspect
+# 常用options
+--label: Set labels for a namespa
+```
 
-### :point_right:nerdctl namespace rm
+### :point_right:nerdctl namespace ls - 命名空间列表
 
-### :point_right:nerdctl namespace prune
+```bash
+Usage: 
+	nerdctl namespace ls [OPTIONS]
+```
+
+### :point_right:nerdctl namespace inspect - 命名空间详情
+
+```bash
+Usage: 
+	nerdctl namespace inspect NAMESPACE
+```
+
+### :point_right:nerdctl namespace remove - 删除命名空间
+
+```bash
+Usage: 
+	nerdctl namespace remove [OPTIONS] NAMESPACE [NAMESPACE...]
+
+# 常用options
+-c, --cgroup: delete the namespace's cgroup
+```
+
+### :point_right:nerdctl namespace update - 更改命名空间（label）
+
+```bash
+Usage: 
+	nerdctl namespace update NAMESPACE
+
+# 常用options
+--label: Set labels for a namespace
+```
+
+
 
 ## 容器资源管理
 
 > AppArmor限制容器对资源访问
+>
+> 管理 AppArmor 配置文件
 
-### :point_right:nerdctl apparmor inspect
+### nerdctl apparmor inspect - 显示nerdctl-default配置详情
 
-### :point_right:nerdctl apparmor load
+> 此命令无法显示其他配置文件。
 
-### :point_right:nerdctl apparmor ls
+```bash
+Usage: 
+	nerdctl apparmor inspect
+```
 
-### :point_right:nerdctl apparmor unload
+### nerdctl apparmor load - 加载nerdctl-default配置详情
+
+```bash
+Usage: 
+	nerdctl apparmor load
+```
+
+### nerdctl apparmor ls - 已加载AppArmor profile列表
+
+```bash
+Usage: 
+	nerdctl apparmor ls [OPTIONS]
+```
+
+### nerdctl apparmor unload - 卸载 AppArmor 配置文件
+
+```bash
+Usage: 
+	nerdctl apparmor unload [PROFILE]
+```
 
 ## Builder 管理
 
-### :point_right:nerdctl builder prune
+### nerdctl builder prune - 清理 BuildKit 构建缓存
 
-### :point_right:nerdctl builder prune
+```bash
+Usage: 
+	nerdctl builder prune
 
-## 系统管理
+# 常用options
+ --buildkit-host=<BUILDKIT_HOST>: BuildKit address
+```
 
-### :point_right:nerdctl events
+### :point_right:nerdctl builder debug - 使用 buildg 交互式调试 Dockerfile
 
-### :point_right:nerdctl info
+[buildg](https://github.com/ktock/buildg)
 
-### :point_right:nerdctl version
+[builder-debug](https://github.com/containerd/nerdctl/blob/master/docs/builder-debug.md)
 
-### :point_right:nerdctl system prune
+```bash
+Usage: 
+	nerdctl builder debug PATH
 
-## Stats - 状态
-
-### :point_right:nerdctl stats
-
-### :point_right:nerdctl top
+# 常用options
+-f, --file: Name of the Dockerfile
+--image: Image to use for debugging stage
+--target: Set the target build stage to build
+--build-arg: Set build-time variables
+```
 
 ## Shell completion
 
-### :point_right:nerdctl completion bash
+### :point_right:nerdctl completion bash - 为 bash 生成自动完成脚本
 
-### :point_right:nerdctl completion zsh
+`source <(nerdctl completion bash)`
 
-### :point_right:nerdctl completion fish
+```bash
+# root 用户
+nerdctl completion bash > /etc/bash_completion.d/nerdctl 
+```
 
-### :point_right:nerdctl completion powershell
+### nerdctl completion zsh - 为 zsh生成自动完成脚本
 
-## Compose
+> 自行help查询
 
-### :point_right:nerdctl compose
+```bash
+ nerdctl completion zsh [flags]
+```
 
-### :point_right:nerdctl compose up
+### nerdctl completion fish - 为 fish生成自动完成脚本
 
-### :point_right:nerdctl compose logs
+> 自行help查询
 
-### :point_right:nerdctl compose build
+### nerdctl completion powershell - 为 powershell 生成自动完成脚本
 
-### :point_right:nerdctl compose down
+> 自行help查询
 
-### :point_right:nerdctl compose ps
+## Compose - 容器编排
 
-### :point_right:nerdctl compose pull
+> 可以参考docker compose
 
-### :point_right:nerdctl compose push
+### :point_right:nerdctl compose - 编排
 
-### :point_right:nerdctl compose config
+```bash
+Usage:
+	nerdctl compose [OPTIONS] [COMMAND]
 
-### :point_right:nerdctl compose kill
+# 常用options
+-f, --file: Specify an alternate compose file
+-p, --project-name: Specify an alternate project name
+```
 
-### :point_right:nerdctl compose run
+### :point_right:nerdctl compose up  - 创建和启动容器
+
+```bash
+Usage: nerdctl compose up [OPTIONS] [SERVICE...]
+
+# 常用options
+-d, --detach: Detached mode: Run containers in the background
+--no-build: Don't build an image, even if it's missing.
+--no-color: Produce monochrome output
+--no-log-prefix: Don't print prefix in logs
+--build: Build images before starting containers.
+--ipfs: Build images with pulling base images from IPFS. See ./docs/ipfs.md for details.
+--quiet-pull: Pull without printing progress information
+--scale: Scale SERVICE to NUM instances. Overrides the scale setting in the Compose file if present.
+--remove-orphans: Remove containers for services not defined in the Compose file
+```
+
+### :point_right:nerdctl compose logs -  查看容器日志
+
+```bash
+Usage: 
+	nerdctl compose logs [OPTIONS]
+
+# 常用options
+--timestamps: Show timestamps
+--tail: Number of lines to show from the end of the lo
+```
+
+### :point_right:nerdctl compose build - 创建或重新创建服务
+
+```bash
+Usage: 
+	nerdctl compose build [OPTIONS]
+```
+
+### :point_right:nerdctl compose down - 移除容器和相关资源
+
+```bash
+Usage: 
+	nerdctl compose down [OPTIONS]
+```
+
+### :point_right:nerdctl compose ps - 列出服务的相关容器
+
+```bash
+Usage: 
+	nerdctl compose ps
+```
+
+### nerdctl compose pull - 拉取服务镜像
+
+```bash
+Usage: 
+	nerdctl compose pull
+```
+
+### nerdctl compose push - 推送服务镜像
+
+```bash
+Usage: 
+	nerdctl compose push
+```
+
+### :point_right:nerdctl compose config - 验证并查看 Compose 文件
+
+```bash
+Usage: 
+	nerdctl compose config
+```
+
+### nerdctl compose kill - 杀死服务的容器运行
+
+```bash
+Usage: 
+	nerdctl compose kill
+
+# 常用options
+-s, --signal: SIGNAL to send to the container (default: "SIGKILL")
+```
+
+### nerdctl compose run - 启动服务运行容器（一次性命令）
+
+```bash
+Usage: 
+	nerdctl compose run
+```
 
 ## IPFS 管理
 
-### :point_right:nerdctl ipfs registry up
+### :point_right:nerdctl ipfs registry up - 启动由 IPFS 支持的只读本地注册表
 
-### :point_right:nerdctl ipfs registry down
+```bash
+Usage: 
+	nerdctl ipfs registry up [OPTIONS]
 
-### :point_right:nerdctl ipfs registry serve
+# 常用options
+--listen-registry: Address to listen (default localhost:5050)
+--read-retry-num: Times to retry query on IPFS (default 0 (no retry))
+--read-timeout: Timeout duration of a read request to IPFS (default 0 (no timeout))
+```
 
-[Global flags](https://github.com/containerd/nerdctl#global-flags)
+### :point_right:nerdctl ipfs registry down - 停止由 IPFS 支持的只读本地注册表
+
+```bash
+Usage: 
+	nerdctl ipfs registry down
+```
+
+### :point_right:nerdctl ipfs registry serve - 启动在 localhost 上提供由 IPFS 支持的只读注册表。
+
+```bash
+Usage: 
+	nerdctl ipfs registry serve [OPTIONS]
+
+# 常用options
+--ipfs-address: Multiaddr of IPFS API (default is pulled from $IPFS_PATH/api file. If $IPFS_PATH env var is not present, it defaults to ~/.ipfs).
+--listen-registry: Address to listen (default localhost:5050).
+--read-retry-num: Times to retry query on IPFS (default 0 (no retry))
+--read-timeout: Timeout duration of a read request to IPFS (default 0 (no timeout))
+```
+
+## 全局options
+
+```bash
+--address: containerd address, optionally with "unix://" prefix
+-a, --host, -H: deprecated aliases of --address
+--namespace: containerd namespace
+-n: deprecated alias of --namespace
+--snapshotter: containerd snapshotter
+--storage-driver: deprecated alias of --snapshotter
+--cni-path: CNI binary path (default: /opt/cni/bin) [$CNI_PATH]
+--cni-netconfpath: CNI netconf path (default: /etc/cni/net.d) [$NETCONFPATH]
+--data-root: nerdctl data root, e.g. "/var/lib/nerdctl"
+--cgroup-manager=(cgroupfs|systemd|none): cgroup manager 
+	Default: "systemd" on cgroup v2 (rootful & rootless), "cgroupfs" on v1 rootful, "none" on v1 rootless
+--insecure-registry: skips verifying HTTPS certs, and allows falling back to plain HTTP
+```
 
 # 其他
 
