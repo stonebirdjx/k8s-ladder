@@ -18,6 +18,9 @@
   - [k8s核心组件](#k8s%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6)
   - [Container Runtime](#container-runtime)
   - [安装k8s](#%E5%AE%89%E8%A3%85k8s)
+  - [kubernetes API（先了解即可）](#kubernetes-api%E5%85%88%E4%BA%86%E8%A7%A3%E5%8D%B3%E5%8F%AF)
+  - [:point_right:Kubernetes 对象](#point_rightkubernetes-%E5%AF%B9%E8%B1%A1)
+  - [:point_right:kubernetes 排错指南](#point_rightkubernetes-%E6%8E%92%E9%94%99%E6%8C%87%E5%8D%97)
 - [参考资料](#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -330,7 +333,7 @@ kubectl get configmap game-config -o yaml -n tutorial
 
 **常用的容器运行时**：
 
-- containerd  -- 命令行（ctr、crictl、nerdctl）- [containerd笔记](https://github.com/stonebirdjx/k8s-ladder/blob/master/containerd.md)
+- containerd  -- 命令行（ctr、crictl、nerdctl）-> [containerd笔记](https://github.com/stonebirdjx/k8s-ladder/blob/master/containerd.md)
 - docker -- 命令行 docker ->  [docker笔记](https://github.com/stonebirdjx/k8s-ladder/blob/master/docker.md)
 
 **:point_right:containerd 优势**：
@@ -347,17 +350,162 @@ kubectl get configmap game-config -o yaml -n tutorial
 
 ## 安装k8s
 
-- kubeadm
+> 个人使用minikube就行
+
+- kubeadm 
 - rke
 - kubespray
-- 手动安装
+- [手动安装-caicloud](https://github.com/caicloud/kube-ladder/blob/master/tutorials/lab3-manual-installtion.md)
 
+## kubernetes API（先了解即可）
 
+Kubernetes API 是 k8 最引以为傲的设计，API 服务器负责提供 HTTP API，以供用户、集群中的不同部分和集群外部组件相互通信。
 
+API 组和版本控制：每个版本位于不同的 API 路径， 例如 `/api/v1` 或 `/apis/rbac.authorization.k8s.io/v1alpha1`
 
+[kubernetes Api官方介绍](https://kubernetes.io/zh-cn/docs/concepts/overview/kubernetes-api/)
+
+[kubernetes API访问控制](https://kubernetes.io/zh-cn/docs/concepts/security/controlling-access/)
+
+[kubernetes API代码库](https://github.com/kubernetes/api)
+
+通过浏览 [Kubernetes/Community](https://github.com/kubernetes/community) 代码仓库来了解各个兴趣小组（SIG），"SIG" 是 Special Interest Group 的简称。一般来讲，一个 SIG 对应着一个 Kubernetes 子系统，需要了解以下子系统：
+
+- 架构 Architecture
+- 应用 Apps
+- 存储 Storage
+- 网络 Network
+- 权限 Auth
+- 节点 Node
+- 调度 Scheduling
+- 命令行 CLI
+- 多集群 MultiCluster
+- 云平台 CloudProvider
+- 扩展性 Scalability
+- 弹性伸缩 Autoscaling
+- 监控日志 Instrumentation
+
+## :point_right:Kubernetes 对象
+
+在 Kubernetes 系统中，**Kubernetes 对象** 是持久化的实体。 Kubernetes 使用这些实体去表示整个集群的状态。 比较特别地是，它们描述了如下信息：
+
+- 哪些容器化应用正在运行（以及在哪些节点上运行）
+- 可以被应用使用的资源
+- 关于应用运行时表现的策略，比如重启策略、升级策略以及容错策略
+
+**对象规约（Spec）与状态（Status）**:
+
+在想要创建的 Kubernetes 对象所对应的 `.yaml` 文件中，需要配置的字段如下：
+
+- `apiVersion` - 创建该对象所使用的 Kubernetes API 的版本
+- `kind` - 想要创建的对象的类别
+- `metadata` - 帮助唯一标识对象的一些数据，包括一个 `name` 字符串、`UID` 和可选的 `namespace`
+- `spec` - 你所期望的该对象的状态
+
+[k8s对象](https://kubernetes.io/zh-cn/docs/concepts/overview/working-with-objects/kubernetes-objects/)
+
+## :point_right:kubernetes 排错指南
+
+日常过程中报错是不可避免的，需要懂得排查报错，大致步骤如下
+
+**查看集群事件**
+
+```bash
+kubectl events
+```
+
+**查看 Node 状态**
+
+```bash
+kubectl get nodes
+kubectl describe node ${node_name}
+```
+
+**查看 Pod 状态以及运行节点**
+
+```bash
+kubectl get pods -o wide
+kubectl -n kube-system get pods -o wide
+```
+
+**查看 Pod 事件**
+
+```bash
+kubectl describe pod ${pod_name}
+```
+
+**kube-apiserver 日志**
+
+```bash
+pod_name=$(kubectl -n kube-system get pod -l component=kube-apiserver -o jsonpath='{.items[0].metadata.name}')
+kubectl -n kube-system logs ${pod_name} --tail 100
+```
+
+> 可以使用 journalctl -u kube-apiserver 查看其日志
+
+**kube-controller-manager 日志**
+
+```bash
+pod_name=$(kubectl -n kube-system get pod -l component=kube-controller-manager -o jsonpath='{.items[0].metadata.name}')
+
+kubectl -n kube-system logs ${pod_name} --tail 100
+```
+
+> 可以使用 journalctl -u kube-controller-manager
+
+**kube-scheduler 日志**
+
+```bash
+pod_name=$(kubectl -n kube-system get pod -l component=kube-scheduler -o jsonpath='{.items[0].metadata.name}')
+
+kubectl -n kube-system logs ${pod_name} --tail 100
+```
+
+> 可以使用 journalctl -u kube-scheduler 
+
+**kube-dns 日志**
+
+> kube-dns 通常以 Addon 的方式部署，每个 Pod 包含三个容器，最关键的是 kubedns 容器的日志
+
+```sh
+pod_name=$(kubectl -n kube-system get pod -l k8s-app=kube-dns -o jsonpath='{.items[0].metadata.name}')
+
+kubectl -n kube-system logs ${pod_name} -c kubedns
+```
+
+**Kube-proxy 日志**
+
+> Kube-proxy 通常以 DaemonSet 的方式部署，可以直接用 kubectl 查询其日志
+
+```bash
+kubectl -n kube-system get pod -l component=kube-proxy
+
+kubectl -n kube-system logs ${pod_name}
+```
+
+**kubelet 日志**
+
+日志文件： /var/log/kubelet/kubelet.log ，可以直接cat
+
+> Kubelet 通常以 systemd 管理。查看 Kubelet 日志需要首先 SSH 登录到 Node 上，推荐使用 [kubectl-node-shell](https://github.com/kvaps/kubectl-node-shell) 
+
+```bash
+curl -LO https://github.com/kvaps/kubectl-node-shell/raw/master/kubectl-node_shell
+chmod +x ./kubectl-node_shell
+sudo mv ./kubectl-node_shell /usr/local/bin/kubectl-node_shell
+
+kubectl node-shell <node>
+journalctl -l -u kubelet
+```
+
+[个人笔记-详细排查指南]()
 
 # 参考资料
 
 :point_right:最好的资料是[官方文档](https://kubernetes.io/zh-cn/)
+
+feisky 的博客：[Kubernetes 指南之核心原理](https://kubernetes.feisky.xyz/concepts/index)
+
+feisky 的博客：[Kubernetes 集群排错指南](https://feisky.gitbooks.io/kubernetes/troubleshooting/)
 
 [caicould](https://github.com/caicloud/kube-ladder)
