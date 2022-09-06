@@ -42,7 +42,7 @@ from introduction to specialist with k8s
 
 :point_right:你需要了解什么是[资源隔离](https://github.com/stonebirdjx/k8s-ladder/blob/master/%E8%B5%84%E6%BA%90%E9%9A%94%E7%A6%BB.md)
 
-## 了解常用资源和概念
+## 了解常用资源和概念（简单了解）
 
 先把k8s当作一个黑盒，知道怎么使用就好了。首先跟着 [官方的例子](https://kubernetes.io/zh-cn/docs/tutorials/kubernetes-basics/) 熟悉一下流程。
 
@@ -307,7 +307,7 @@ kubectl describe configmap game-config -n tutorial
 kubectl get configmap game-config -o yaml -n tutorial
 ```
 
-## k8s核心组件
+## :point_right:k8s核心组件（简单了解）
 
 [官方组件说明](https://kubernetes.io/zh-cn/docs/concepts/overview/components/)
 
@@ -319,7 +319,7 @@ kubectl get configmap game-config -o yaml -n tutorial
 
 :point_right:了解基本组件、基本功能
 
-## Container Runtime
+## :point_right:Container Runtime（简单了解）
 
 **概念**
 
@@ -348,7 +348,7 @@ kubectl get configmap game-config -o yaml -n tutorial
 >
 > 对于containerd相关命令，熟练使用crictl，nerdctl，了解ctr
 
-## 安装k8s
+## 安装k8s（简单了解）
 
 > 个人使用minikube就行
 
@@ -357,7 +357,7 @@ kubectl get configmap game-config -o yaml -n tutorial
 - kubespray
 - [手动安装-caicloud](https://github.com/caicloud/kube-ladder/blob/master/tutorials/lab3-manual-installtion.md)
 
-## kubernetes API（先了解即可）
+## :point_right:kubernetes API（先简单了解，后仔细查阅ing）
 
 Kubernetes API 是 k8 最引以为傲的设计，API 服务器负责提供 HTTP API，以供用户、集群中的不同部分和集群外部组件相互通信。
 
@@ -385,7 +385,7 @@ API 组和版本控制：每个版本位于不同的 API 路径， 例如 `/api/
 - 弹性伸缩 Autoscaling
 - 监控日志 Instrumentation
 
-## :point_right:Kubernetes 对象
+## Kubernetes 对象（简单了解）
 
 在 Kubernetes 系统中，**Kubernetes 对象** 是持久化的实体。 Kubernetes 使用这些实体去表示整个集群的状态。 比较特别地是，它们描述了如下信息：
 
@@ -404,7 +404,7 @@ API 组和版本控制：每个版本位于不同的 API 路径， 例如 `/api/
 
 [k8s对象](https://kubernetes.io/zh-cn/docs/concepts/overview/working-with-objects/kubernetes-objects/)
 
-## :point_right:kubernetes 排错指南
+## :point_right:kubernetes 排错 (知道套路)
 
 日常过程中报错是不可避免的，需要懂得排查报错，大致步骤如下
 
@@ -498,7 +498,15 @@ kubectl node-shell <node>
 journalctl -l -u kubelet
 ```
 
-[个人笔记-详细排查指南]()
+[排错官方指南](https://kubernetes.io/zh-cn/docs/tasks/debug/)
+
+[个人笔记-详细排查指南](https://github.com/stonebirdjx/k8s-ladder/blob/master/k8s%E6%8E%92%E9%94%99%E6%95%B4%E7%90%86.md)
+
+## :point_right:kebernetes 资源对象
+
+
+
+
 
 # 参考资料
 
