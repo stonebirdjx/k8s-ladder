@@ -4,7 +4,7 @@
 
 - [k8s-ladder](#k8s-ladder)
   - [概念](#%E6%A6%82%E5%BF%B5)
-  - [了解常用资源和概念](#%E4%BA%86%E8%A7%A3%E5%B8%B8%E7%94%A8%E8%B5%84%E6%BA%90%E5%92%8C%E6%A6%82%E5%BF%B5)
+  - [了解常用资源和概念（简单了解）](#%E4%BA%86%E8%A7%A3%E5%B8%B8%E7%94%A8%E8%B5%84%E6%BA%90%E5%92%8C%E6%A6%82%E5%BF%B5%E7%AE%80%E5%8D%95%E4%BA%86%E8%A7%A3)
     - [Node](#node)
     - [Namespace](#namespace)
     - [Pod & Deployment](#pod--deployment)
@@ -15,12 +15,13 @@
     - [Yaml/Json File](#yamljson-file)
     - [Event](#event)
     - [Configmap & Secret](#configmap--secret)
-  - [k8s核心组件](#k8s%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6)
-  - [Container Runtime](#container-runtime)
-  - [安装k8s](#%E5%AE%89%E8%A3%85k8s)
-  - [kubernetes API（先了解即可）](#kubernetes-api%E5%85%88%E4%BA%86%E8%A7%A3%E5%8D%B3%E5%8F%AF)
-  - [:point_right:Kubernetes 对象](#point_rightkubernetes-%E5%AF%B9%E8%B1%A1)
-  - [:point_right:kubernetes 排错指南](#point_rightkubernetes-%E6%8E%92%E9%94%99%E6%8C%87%E5%8D%97)
+  - [:point_right:k8s核心组件（简单了解）](#point_rightk8s%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E7%AE%80%E5%8D%95%E4%BA%86%E8%A7%A3)
+  - [:point_right:Container Runtime（简单了解）](#point_rightcontainer-runtime%E7%AE%80%E5%8D%95%E4%BA%86%E8%A7%A3)
+  - [安装k8s（简单了解）](#%E5%AE%89%E8%A3%85k8s%E7%AE%80%E5%8D%95%E4%BA%86%E8%A7%A3)
+  - [:point_right:kubernetes API（先简单了解，后仔细查阅ing）](#point_rightkubernetes-api%E5%85%88%E7%AE%80%E5%8D%95%E4%BA%86%E8%A7%A3%E5%90%8E%E4%BB%94%E7%BB%86%E6%9F%A5%E9%98%85ing)
+  - [Kubernetes 对象（简单了解）](#kubernetes-%E5%AF%B9%E8%B1%A1%E7%AE%80%E5%8D%95%E4%BA%86%E8%A7%A3)
+  - [:point_right:kubernetes 排错 (知道套路)](#point_rightkubernetes-%E6%8E%92%E9%94%99-%E7%9F%A5%E9%81%93%E5%A5%97%E8%B7%AF)
+  - [:point_right:kebernetes 资源对象](#point_rightkebernetes-%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1)
 - [参考资料](#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
