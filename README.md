@@ -22,6 +22,7 @@
   - [Kubernetes 对象（简单了解）](#kubernetes-%E5%AF%B9%E8%B1%A1%E7%AE%80%E5%8D%95%E4%BA%86%E8%A7%A3)
   - [:point_right:kubernetes 排错 (知道套路)](#point_rightkubernetes-%E6%8E%92%E9%94%99-%E7%9F%A5%E9%81%93%E5%A5%97%E8%B7%AF)
   - [接下来就是比较重要的东西了](#%E6%8E%A5%E4%B8%8B%E6%9D%A5%E5%B0%B1%E6%98%AF%E6%AF%94%E8%BE%83%E9%87%8D%E8%A6%81%E7%9A%84%E4%B8%9C%E8%A5%BF%E4%BA%86)
+  - [:point_right:先了解k8s资源对象](#point_right%E5%85%88%E4%BA%86%E8%A7%A3k8s%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1)
   - [:point_right:pod的生命周期-健康检查-重启策略-容器探针](#point_rightpod%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F-%E5%81%A5%E5%BA%B7%E6%A3%80%E6%9F%A5-%E9%87%8D%E5%90%AF%E7%AD%96%E7%95%A5-%E5%AE%B9%E5%99%A8%E6%8E%A2%E9%92%88)
   - [:point_right:init 容器](#point_rightinit-%E5%AE%B9%E5%99%A8)
   - [:point_right:Pod 水平自动扩缩(HPA)](#point_rightpod-%E6%B0%B4%E5%B9%B3%E8%87%AA%E5%8A%A8%E6%89%A9%E7%BC%A9hpa)
@@ -517,7 +518,7 @@ journalctl -l -u kubelet
 
 ## 接下来就是比较重要的东西了
 
-:point_right:[先了解k8s资源对象]()
+## :point_right:[先了解k8s资源对象](https://github.com/stonebirdjx/k8s-ladder/blob/master/k8s%E5%AF%B9%E8%B1%A1.md)
 
 ## :point_right:pod的生命周期-健康检查-重启策略-容器探针
 
