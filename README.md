@@ -33,6 +33,7 @@
   - [:point_right:StorageClass](#point_rightstorageclass)
   - [:point_right:API 访问控制](#point_rightapi-%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6)
   - [:point_right:调度、抢占和驱逐](#point_right%E8%B0%83%E5%BA%A6%E6%8A%A2%E5%8D%A0%E5%92%8C%E9%A9%B1%E9%80%90)
+  - [:point_right:组件配置 (熟悉基本后慢慢了解)](#point_right%E7%BB%84%E4%BB%B6%E9%85%8D%E7%BD%AE-%E7%86%9F%E6%82%89%E5%9F%BA%E6%9C%AC%E5%90%8E%E6%85%A2%E6%85%A2%E4%BA%86%E8%A7%A3)
 - [参考资料](#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -692,18 +693,94 @@ provisioner: kubernetes.io/aws-ebs
 
 ## :point_right:API 访问控制
 
-- [AuthN](https://kubernetes.io/docs/reference/access-authn-authz/authentication/), [AuthZ](https://kubernetes.io/docs/reference/access-authn-authz/authorization/) & [Admission Control](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/)
-- [NetworkPolicy](https://kubernetes.io/docs/concepts/services-networking/network-policies/)
-- [ServiceAccount](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/)
-- [Pod/Container SecurityContext](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)
-- [Pod Security Policy (PSP)](https://kubernetes.io/docs/concepts/policy/pod-security-policy/)
+[用户认证](https://kubernetes.io/zh-cn/docs/reference/access-authn-authz/authentication/)
+
+[鉴权概述](https://kubernetes.io/zh-cn/docs/reference/access-authn-authz/authorization/)
+
+[使用准入控制器(Admission Controllers)](https://kubernetes.io/zh-cn/docs/reference/access-authn-authz/admission-controllers/)
+
+[网络策略(NetworkPolicy)](https://kubernetes.io/zh-cn/docs/concepts/services-networking/network-policies/) - namespace网络隔离，pod网络隔离 
+
+[为pod配置服务账户(ServiceAccount)](https://kubernetes.io/zh-cn/docs/tasks/configure-pod-container/configure-service-account/)
+
+[为 Pod 或容器配置安全上下文(Security Context)](https://kubernetes.io/zh-cn/docs/tasks/configure-pod-container/security-context/)
+
+[Pod 安全性准入(Pod Security Standard)](https://kubernetes.io/zh-cn/docs/concepts/security/pod-security-admission/)
 
 ## :point_right:调度、抢占和驱逐
 
-- [Pod/Node Affinity & Anti-affinity](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity)
-- [Taint & Toleration](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/)
-- [Priority & Preemption](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/)
-- [Pod Disruption Budget](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/)
+[将 Pod 指派给节点](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/assign-pod-node/)
+
+[污点和容忍度(Taint &Toleration )](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/taint-and-toleration/)
+
+[优先级和抢占(PriorityClass)](https://kubernetes.io/zh-cn/docs/concepts/scheduling-eviction/pod-priority-preemption/)
+
+[pod干扰(PodDisruptionBudget )](https://kubernetes.io/zh-cn/docs/concepts/workloads/pods/disruptions/) - drain、cordon、uncordon
+
+## :point_right:[组件配置](https://kubernetes.io/zh-cn/docs/reference/command-line-tools-reference/) (熟悉基本后慢慢了解)
+
+*Master*
+
+- Dynamic Admission Control
+  - 动态准入控制（在练虚期阶段需要更加深入的了解）
+  - 对应 API Server `--admission-control-config-file` 参数
+- Advanced Auditing
+  - 提供可动态配置的审计功能
+  - 对应 API Server 带有 `--audit-` 前缀的参数
+- Etcd Configuration
+  - 提供各种与 Etcd 相关的配置，例如 Kubernetes event TTL
+  - 对应 API Server 带有 `--etcd-` 前缀的参数
+- All Admission Controllers
+  - 列举所有 Kubernetes 所支持的 Admission Controllers，每个 Admission 都与 Kubernetes 特定的功能相关联
+  - 对应 API Server `--enable-admission-plugins` 参数，该参数注释列举了所有的默认 Admission Controllers
+- Garbage Collection
+  - 启用后，Kubernetes 会自动根据 `OwnerReferences` 来回收 API 资源
+  - 对应 Controller-Manager `--enable-garbage-collector` 参数
+- Concurrent Sync Limiting
+  - 避免过多的资源同步导致集群资源的消耗
+  - 对应 Controller-Manager 带有 `--concurrent` 前缀的参数
+- All Controllers
+  - 列举所有 Kubernetes 所支持的 Controllers，每个 Controller 都与 Kubernetes 特定的功能相关联
+  - 对应 Controller-Manager `--controllers`，该参数注释列举了所有的默认 Controllers
+
+其它值得注意的参数包括：
+
+- API-Server `--max-requests-inflight`, `--min-request-timeout`
+- API-Server `--watch-cache`, `--watch-cache-sizes`
+- Controller-Manager `--node-eviction-rate`
+- Controller-Manager `--pod-eviction-timeout`
+- Controller-Manager `--terminated-pod-gc-threshold`
+- Controller-Manager `--pv-recycler-minimum-timeout-*`
+
+*Node*
+
+- Kubelet Eviction
+  - 当节点资源不足时，Kubernetes 通过驱逐 Pods 的方式确保节点的稳定性
+  - 对应 Kubelet 带有 `--eviction-` 前缀的参数，例如 `--eviction-hard`
+- Image GC
+  - 清理容器镜像占用的磁盘空间
+  - 对应 Kubelet 带有 `--image-gc-` 前缀的参数，以及 `--minimum-image-ttl-duration` 等参数
+- Resource Reserve
+  - 为系统资源预留一定的资源，确保节点的稳定性
+  - 对应 Kubelet `--kube-reserved`、`--kube-reserved-cgroup` 等参数
+- CPU Manager
+  - 提供更多的 CPU 管理能力，例如静态 CPU 亲和性
+  - 对应 Kubelet `--cpu-manager-*` 前缀的参数
+- Storage Limit
+  - 避免节点过度挂载数据卷
+  - 对应 FeatureGate `AttachVolumeLimit`
+
+其它值得注意的参数包括：
+
+- Kubelet & Kubeproxy `--hostname-override`
+- Kubelet `--cgroups-per-qos`
+- Kubelet `--fail-swap-on`
+- Kubelet `--host-*`
+- Kubelet `--max-pods`, `--pods-per-core`
+- Kubelet `--resolv-conf`
+- Kubeproxy `--nodeport-addresses`
+
+
 
 
 
