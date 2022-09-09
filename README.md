@@ -35,6 +35,8 @@
   - [:point_right:API 访问控制](#point_rightapi-%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6)
   - [:point_right:调度、抢占和驱逐](#point_right%E8%B0%83%E5%BA%A6%E6%8A%A2%E5%8D%A0%E5%92%8C%E9%A9%B1%E9%80%90)
   - [:point_right:组件配置 (熟悉基本后慢慢了解)](#point_right%E7%BB%84%E4%BB%B6%E9%85%8D%E7%BD%AE-%E7%86%9F%E6%82%89%E5%9F%BA%E6%9C%AC%E5%90%8E%E6%85%A2%E6%85%A2%E4%BA%86%E8%A7%A3)
+  - [:point_right:扩展 Kubernetes - 大道致远](#point_right%E6%89%A9%E5%B1%95-kubernetes---%E5%A4%A7%E9%81%93%E8%87%B4%E8%BF%9C)
+  - [:point_right:几个重要的项目](#point_right%E5%87%A0%E4%B8%AA%E9%87%8D%E8%A6%81%E7%9A%84%E9%A1%B9%E7%9B%AE)
 - [参考资料](#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -781,9 +783,16 @@ provisioner: kubernetes.io/aws-ebs
 - Kubelet `--resolv-conf`
 - Kubeproxy `--nodeport-addresses`
 
+## :point_right:[扩展 Kubernetes](https://kubernetes.io/zh-cn/docs/concepts/extend-kubernetes/) - 大道致远
 
+## :point_right:几个重要的项目
 
+- [Helm](https://github.com/helm/helm)：作为 Kubernetes 生态里的 brew、dnf、dpkg，Helm 为 Kubernetes 提供了包管理能力，方便用户快速部署安装各种服务。
+- [Harbor](https://github.com/goharbor/harbor)：Harbor 与 Kubernetes 无直接关系，但作为云原生环境下最常用的镜像仓库解决方案，了解 Harbor 十分重要。
+- [Prometheus](https://prometheus.io/)：Prometheus 是云原生环境下最重要的监控组件。
+- [Istio](https://istio.io/)：Istio 是服务网格的关键项目，但较为复杂，可以尝试简单了解。
 
+请坚持学习！
 
 # 参考资料
 
