@@ -7,6 +7,7 @@
     - [:point_right:有组名资源组](#point_right%E6%9C%89%E7%BB%84%E5%90%8D%E8%B5%84%E6%BA%90%E7%BB%84)
     - [:point_right:无组名资源组](#point_right%E6%97%A0%E7%BB%84%E5%90%8D%E8%B5%84%E6%BA%90%E7%BB%84)
     - [请求路径](#%E8%AF%B7%E6%B1%82%E8%B7%AF%E5%BE%84)
+  - [Client-Go目录讲解](#client-go%E7%9B%AE%E5%BD%95%E8%AE%B2%E8%A7%A3)
   - [Client-Go客户端](#client-go%E5%AE%A2%E6%88%B7%E7%AB%AF)
   - [:point_right:RESTClient](#point_rightrestclient)
   - [:point_right:ClientSet](#point_rightclientset)
@@ -108,6 +109,25 @@ GVR/GVK 含义介绍
 
 ```bash
 GET /apis/apps/v1/namespaces/{namespace}/deployments/{name}
+```
+
+## Client-Go目录讲解
+
+```bash
+.client-go
+├── discovery                   # 定义DsicoveryClient客户端。作用是用于发现k8s所支持GVR(Group, Version, Resources)。
+├── dynamic                     # 定义DynamicClient客户端。可以用于访问k8s Resources(如: Pod, Deploy...)，也可以访问用户自定义资源(即: CRD)。
+├── informers                   # k8s中各种Resources的Informer机制的实现。
+├── kubernetes                  # 定义ClientSet客户端。它只能用于访问k8s Resources。每一种资源(如: Pod等)都可以看成是一个客端，而ClientSet是多个客户端的集合，它对RestClient进行了封装，引入了对Resources和Version的管
+|                               # 理。通常来说ClientSet是client-gen来自动生成的。
+├── listers                     # 提供对Resources的获取功能。对于Get()和List()而言，listers提供给二者的数据都是从缓存中读取的。
+├── pkg
+├── plugin                      # 提供第三方插件。如：GCP, OpenStack等。
+├── rest                        # 定义RestClient，实现了Restful的API。同时会支持Protobuf和Json格式数据。
+├── scale                       # 定义ScalClient。用于Deploy, RS, RC等的扩/缩容。
+├── tools                       # 定义诸如SharedInformer、Reflector、DealtFIFO和Indexer等常用工具。实现client查询和缓存机制，减少client与api-server请求次数，减少api-server的压力。
+├── transport
+└── util                        # 提供诸如WorkQueue、Certificate等常用方法。
 ```
 
 ## Client-Go客户端
